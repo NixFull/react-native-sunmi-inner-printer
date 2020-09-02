@@ -1135,7 +1135,7 @@ public class SunmiInnerPrinterModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sendLCDDoubleString(final String msg1, final String msg2) {
         try{
-            woyouService.sendLCDDoubleString(msg, msg2, null);
+            woyouService.sendLCDDoubleString(msg1, msg2, null);
         }catch(Exception e) {
             Log.i(TAG, "sendLCDDoubleString: " + e.getMessage());
         }
