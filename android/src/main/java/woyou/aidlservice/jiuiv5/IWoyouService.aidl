@@ -301,10 +301,24 @@ interface IWoyouService
     */
     int getFontName();
     
+    
     /*
-    * @param flag 1 初始化 2 唤醒LCD 3休眠LCD 4清屏
+    *  发送LCD控制指令
+    *  @param flag 1 初始化 2 唤醒LCD 3休眠LCD 4清屏 
     */
     void sendLCDCommand(in int flag);
+    
+    /*
+    *  发送一个字符串显示到顾显上
+    *  @param string 显示的字符串内容，最多显示4个汉字或8个英文
+    */
     void sendLCDString(in String string, ILcdCallback callback);
+    
+    /**
+    *   发送双行固显内容字符串
+    *   string: 固显显示的字符串
+    *   支持版本：T1mini-v2.4.1以上
+    *           T2mini-v1.0.0以上
+    */
     void sendLCDDoubleString(in String topText, in String bottomText, ILcdCallback callback);
 }
