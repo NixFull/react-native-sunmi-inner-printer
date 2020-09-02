@@ -17,6 +17,7 @@ import java.io.IOException;
 
 import woyou.aidlservice.jiuiv5.IWoyouService;
 import woyou.aidlservice.jiuiv5.ICallback;
+import woyou.aidlservice.jiuiv5.ILcdCallback;
 import android.os.RemoteException;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -320,50 +321,6 @@ public class SunmiInnerPrinterModule extends ReactContextBaseJavaModule {
         final IWoyouService printerService = woyouService;
         final boolean hasPrinterService = printerService != null;
         return hasPrinterService;
-    }
-
-    /**
-     * 获取打印头打印长度
-     */
-    @ReactMethod
-    public void getPrintedLength(final Promise p) {
-        final IWoyouService printerService = woyouService;
-        ThreadPoolManager.getInstance().executeTask(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    printerService.getPrintedLength(new ICallback.Stub() {
-                        @Override
-                        public void onPrintResult(int par1, String par2) {
-                            Log.d(TAG, "ON PRINT RES: " + par1 + ", " + par2);
-                        }
-
-                        @Override
-                        public void onRunResult(boolean isSuccess) {
-                            if (isSuccess) {
-                                p.resolve(null);
-                            } else {
-                                p.reject("0", isSuccess + "");
-                            }
-                        }
-
-                        @Override
-                        public void onReturnString(String result) {
-                            p.resolve(result);
-                        }
-
-                        @Override
-                        public void onRaiseException(int code, String msg) {
-                            p.reject("" + code, msg);
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.i(TAG, "ERROR: " + e.getMessage());
-                    p.reject("" + 0, e.getMessage());
-                }
-            }
-        });
     }
 
     /**
@@ -1058,22 +1015,6 @@ public class SunmiInnerPrinterModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void clearBuffer() {
-        final IWoyouService ss = woyouService;
-        ThreadPoolManager.getInstance().executeTask(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ss.clearBuffer();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.i(TAG, "ERROR: " + e.getMessage());
-                }
-            }
-        });
-    }
-
-    @ReactMethod
     public void exitPrinterBufferWithCallback(final boolean commit, final Callback callback) {
         final IWoyouService ss = woyouService;
         ThreadPoolManager.getInstance().executeTask(new Runnable() {
@@ -1115,13 +1056,22 @@ public class SunmiInnerPrinterModule extends ReactContextBaseJavaModule {
     }
     @ReactMethod
     public void sendLCDCommand(final int flag) {
-        try{
-            woyouService.sendLCDCommand(flag);
-        }catch(Exception e) {
-            Log.i(TAG, "sendLCDCommand: " + e.getMessage());
-        }
+        final IWoyouService ss = woyouService;
+        ThreadPoolManager.getInstance().executeTask(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ss.sendLCDCommand(flag);
+                    Log.i(TAG, "sendLCDCommand: 1");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.i(TAG, "ERROR: " + e.getMessage());
+                }
+            }
+        });
     }
-    
+
     @ReactMethod
     public void sendLCDString(final String msg) {
         try{
@@ -1130,8 +1080,8 @@ public class SunmiInnerPrinterModule extends ReactContextBaseJavaModule {
             Log.i(TAG, "sendLCDString: " + e.getMessage());
         }
     }
-    
-    
+
+
     @ReactMethod
     public void sendLCDDoubleString(final String msg1, final String msg2) {
         try{
