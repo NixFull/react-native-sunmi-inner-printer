@@ -2,6 +2,7 @@
 
 package woyou.aidlservice.jiuiv5;
 
+import woyou.aidlservice.jiuiv5.ILcdCallback;
 import woyou.aidlservice.jiuiv5.ICallback;
 import woyou.aidlservice.jiuiv5.ITax;
 import android.graphics.Bitmap;
@@ -299,4 +300,11 @@ interface IWoyouService
     *           V2-v1.0.0以上
     */
     int getFontName();
+    
+    /*
+    * @param flag 1 初始化 2 唤醒LCD 3休眠LCD 4清屏
+    */
+    void sendLCDCommand(in int flag);
+    void sendLCDString(in String string, ILcdCallback callback);
+    void sendLCDDoubleString(in String topText, in String bottomText, ILcdCallback callback);
 }
