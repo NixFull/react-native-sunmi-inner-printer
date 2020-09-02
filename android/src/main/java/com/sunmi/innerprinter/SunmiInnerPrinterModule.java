@@ -1113,4 +1113,31 @@ public class SunmiInnerPrinterModule extends ReactContextBaseJavaModule {
             }
         });
     }
+    @ReactMethod
+    public void sendLCDCommand(final int flag) {
+        try{
+            woyouService.sendLCDCommand(flag);
+        }catch(Exception e) {
+            Log.i(TAG, "sendLCDCommand: " + e.getMessage());
+        }
+    }
+    
+    @ReactMethod
+    public void sendLCDString(final String msg) {
+        try{
+            woyouService.sendLCDString(msg, null);
+        }catch(Exception e) {
+            Log.i(TAG, "sendLCDString: " + e.getMessage());
+        }
+    }
+    
+    
+    @ReactMethod
+    public void sendLCDDoubleString(final String msg1, final String msg2) {
+        try{
+            woyouService.sendLCDDoubleString(msg, msg2, null);
+        }catch(Exception e) {
+            Log.i(TAG, "sendLCDDoubleString: " + e.getMessage());
+        }
+    }
 }
