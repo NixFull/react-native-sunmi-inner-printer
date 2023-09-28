@@ -1113,4 +1113,9 @@ public class SunmiInnerPrinterModule extends ReactContextBaseJavaModule {
             }
         });
     }
+
+    @ReactMethod
+    public void cancelPrinting(){
+        ThreadPoolManager.getInstance().cancelAllTasks();
+    }
 }
